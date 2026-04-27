@@ -1,0 +1,32 @@
+{
+  "name": "qrcode-website",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Official website and blog for the QR Code project",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "check": "astro check",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,astro,md,mdx,json,css}\"",
+    "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,astro,md,mdx,json,css}\""
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@astrojs/mdx": "^4.2.6",
+    "@astrojs/rss": "^4.0.11",
+    "@astrojs/sitemap": "^3.3.1",
+    "@tailwindcss/vite": "^4.1.5",
+    "astro": "^5.7.10",
+    "tailwindcss": "^4.1.5",
+    "typescript": "^5.8.3"
+  },
+  "devDependencies": {
+    "prettier": "^3.5.3",
+    "prettier-plugin-astro": "^0.14.1",
+    "prettier-plugin-tailwindcss": "^0.6.11"
+  }
+}
