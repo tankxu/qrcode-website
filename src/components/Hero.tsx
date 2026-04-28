@@ -155,7 +155,7 @@ const Hero = () => {
                 <QrCode className="w-4 h-4 text-brand-600" />
                 <span className="text-xs text-gray-500 font-medium">Dynamic Link</span>
               </div>
-              <div className="text-sm font-semibold truncate text-gray-900">pandaqr.xyz/link</div>
+              <div className="text-sm font-semibold truncate text-gray-900">pandaqr.xyz/q/menu</div>
             </motion.div>
           </motion.div>
         </motion.div>
