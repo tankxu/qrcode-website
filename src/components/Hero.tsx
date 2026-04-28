@@ -30,7 +30,7 @@ const Hero = () => {
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-brand-500/10 rounded-full blur-[100px] animate-pulse-slow" />
       <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[120px] animate-pulse-slow" style={{ animationDelay: '2s' }} />
 
-      <div className="mx-auto px-6 relative z-10 flex flex-col lg:flex-row items-center justify-between w-full max-w-[1080px]">
+      <div className="mx-auto px-6 relative z-10 flex flex-col lg:flex-row items-center justify-between w-full max-w-[1180px]">
         
         {/* Left Column: Text & CTA */}
         <div className="flex-1 text-center lg:text-left flex flex-col items-center lg:items-start max-w-2xl">
