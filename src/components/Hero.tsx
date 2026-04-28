@@ -71,13 +71,16 @@ const Hero = () => {
             transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
             className="flex flex-col sm:flex-row items-center gap-4 w-full justify-center lg:justify-start"
           >
-            <button className="group relative inline-flex items-center justify-center gap-2 px-8 py-4 text-base font-medium text-white bg-gray-900 rounded-full overflow-hidden transition-transform active:scale-95 hover:shadow-2xl hover:shadow-gray-900/20 w-full sm:w-auto">
+            <a
+              href="https://app.pandaqr.xyz"
+              className="group relative inline-flex items-center justify-center gap-2 px-8 py-4 text-base font-medium text-white bg-gray-900 rounded-full overflow-hidden transition-transform active:scale-95 hover:shadow-2xl hover:shadow-gray-900/20 w-full sm:w-auto"
+            >
               <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-brand-600 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-out" />
               <span className="relative flex items-center gap-2">
                 Continue with Google
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </span>
-            </button>
+            </a>
             <button className="inline-flex items-center justify-center px-8 py-4 text-base font-medium text-gray-700 bg-white border border-gray-200 rounded-full hover:bg-gray-50 transition-colors w-full sm:w-auto">
               View Examples
             </button>
@@ -152,7 +155,7 @@ const Hero = () => {
                 <QrCode className="w-4 h-4 text-brand-600" />
                 <span className="text-xs text-gray-500 font-medium">Dynamic Link</span>
               </div>
-              <div className="text-sm font-semibold truncate text-gray-900">pandaqr.com/p/menu</div>
+              <div className="text-sm font-semibold truncate text-gray-900">pandaqr.xyz/p/menu</div>
             </motion.div>
           </motion.div>
         </motion.div>
