@@ -1,16 +1,23 @@
 ---
 import Layout from '@layouts/Layout.astro';
+import Hero from '@components/Hero';
+import BentoFeatures from '@components/BentoFeatures';
+import HowItWorks from '@components/HowItWorks.astro';
+import UseCases from '@components/UseCases.astro';
+import Testimonials from '@components/Testimonials.astro';
+import FAQ from '@components/FAQ.astro';
+import BottomCTA from '@components/BottomCTA.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '@/consts';
 ---
 
-<Layout title={SITE_TITLE} description={SITE_DESCRIPTION}>
-  <section class="mx-auto max-w-4xl px-4 py-24 text-center">
-    <h1 class="text-5xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-      {SITE_TITLE}
-    </h1>
-    <p class="mx-auto mt-6 max-w-2xl text-lg text-gray-600">
-      {/* TODO: replace with real homepage content */}
-      Homepage placeholder.
-    </p>
-  </section>
+<Layout title={`${SITE_TITLE} - The Permanent QR Code`} description={SITE_DESCRIPTION}>
+  <main class="relative z-0">
+    <Hero client:load />
+    <BentoFeatures client:load />
+    <HowItWorks />
+    <UseCases />
+    <Testimonials />
+    <FAQ />
+    <BottomCTA />
+  </main>
 </Layout>
