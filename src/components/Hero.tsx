@@ -92,7 +92,7 @@ const Hero = () => {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="flex-1 w-full flex justify-center lg:justify-end perspective-1000"
+          className="flex-1 w-full flex justify-center lg:justify-end perspective-1000 mt-20 lg:mt-0"
           style={{ perspective: 1000 }}
         >
           <motion.div
