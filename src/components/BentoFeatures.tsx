@@ -10,7 +10,7 @@ const features = [
     color: 'text-green-600',
     bg: 'bg-green-50',
     colSpan: 'col-span-1 md:col-span-3 lg:col-span-3',
-    textPad: 'pr-0 sm:pr-64',
+    textPad: 'lg:pr-64',
     type: 'group-chat'
   },
   {
@@ -20,7 +20,7 @@ const features = [
     color: 'text-orange-600',
     bg: 'bg-orange-50',
     colSpan: 'col-span-1 md:col-span-2 lg:col-span-2',
-    textPad: 'pr-0 sm:pr-32',
+    textPad: 'lg:pr-32',
     type: 'menu'
   },
   {
@@ -60,7 +60,7 @@ export default function BentoFeatures() {
         </motion.div>
 
         {/* Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-5 gap-6 auto-rows-[300px]">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:auto-rows-[300px]">
           {features.map((f, i) => (
             <motion.div 
               key={i}
@@ -86,7 +86,7 @@ export default function BentoFeatures() {
                   <motion.div
                     animate={{ y: [0, -10, 0] }}
                     transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-                    className="absolute -bottom-16 right-10 flex gap-4"
+                    className="absolute -bottom-16 right-10 hidden lg:flex gap-4"
                   >
                     <div className="w-56 h-60 bg-white border border-gray-100 rounded-t-3xl shadow-[0_-10px_40px_rgba(0,0,0,0.03)] flex flex-col p-6">
                       <div className="w-16 h-4 bg-gray-100 rounded-full mb-5"></div>
@@ -101,10 +101,10 @@ export default function BentoFeatures() {
                 )}
                 
                 {f.type === 'menu' && (
-                  <motion.div 
-                    animate={{ y: [0, -6, 0] }} 
+                  <motion.div
+                    animate={{ y: [0, -6, 0] }}
                     transition={{ repeat: Infinity, duration: 5, ease: "easeInOut", delay: 1 }}
-                    className="absolute bottom-6 right-6 flex"
+                    className="absolute bottom-6 right-6 hidden lg:flex"
                   >
                     <div className="w-32 h-32 bg-white border border-gray-100 rounded-3xl shadow-[0_10px_40px_rgba(0,0,0,0.04)] flex flex-col items-center justify-center p-4">
                       <QrCode className="w-10 h-10 text-gray-200 mb-3" />
@@ -115,7 +115,7 @@ export default function BentoFeatures() {
                 )}
 
                 {f.type === 'multilink' && (
-                  <div className="hidden md:flex absolute inset-y-0 right-16 items-center justify-center">
+                  <div className="hidden lg:flex absolute inset-y-0 right-16 items-center justify-center">
                     <div className="relative w-[400px] h-full flex flex-col justify-center gap-5">
                       <motion.div 
                         animate={{ x: [0, -10, 0] }} 
