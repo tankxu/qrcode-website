@@ -10,7 +10,7 @@ const features = [
     color: 'text-green-600',
     bg: 'bg-green-50',
     colSpan: 'col-span-1 md:col-span-3 lg:col-span-3',
-    textPad: '',
+    textPad: 'pr-0 sm:pr-64',
     type: 'group-chat'
   },
   {
@@ -20,7 +20,7 @@ const features = [
     color: 'text-orange-600',
     bg: 'bg-orange-50',
     colSpan: 'col-span-1 md:col-span-2 lg:col-span-2',
-    textPad: 'pr-0 sm:pr-40',
+    textPad: 'pr-0 sm:pr-32',
     type: 'menu'
   },
   {
@@ -83,16 +83,19 @@ export default function BentoFeatures() {
                 
                 {/* Clean, Light-Colored Minimalist Dynamic Visuals */}
                 {f.type === 'group-chat' && (
-                  <motion.div 
-                    animate={{ y: [0, -10, 0] }} 
+                  <motion.div
+                    animate={{ y: [0, -10, 0] }}
                     transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-                    className="absolute bottom-0 right-10 flex gap-4"
+                    className="absolute -bottom-16 right-10 flex gap-4"
                   >
-                    <div className="w-56 h-36 bg-white border border-gray-100 rounded-t-3xl shadow-[0_-10px_40px_rgba(0,0,0,0.03)] flex flex-col p-6">
+                    <div className="w-56 h-60 bg-white border border-gray-100 rounded-t-3xl shadow-[0_-10px_40px_rgba(0,0,0,0.03)] flex flex-col p-6">
                       <div className="w-16 h-4 bg-gray-100 rounded-full mb-5"></div>
                       <div className="w-full h-3 bg-gray-50 rounded-full mb-3"></div>
                       <div className="w-3/4 h-3 bg-gray-50 rounded-full mb-3"></div>
-                      <div className="w-1/2 h-3 bg-gray-50 rounded-full"></div>
+                      <div className="w-1/2 h-3 bg-gray-50 rounded-full mb-5"></div>
+                      <div className="w-full h-3 bg-gray-50 rounded-full mb-3"></div>
+                      <div className="w-2/3 h-3 bg-gray-50 rounded-full mb-3"></div>
+                      <div className="w-5/6 h-3 bg-gray-50 rounded-full"></div>
                     </div>
                   </motion.div>
                 )}
