@@ -18,7 +18,7 @@ const features = [
     icon: Utensils,
     color: 'text-orange-600',
     bg: 'bg-orange-50',
-    colSpan: 'col-span-1 md:col-span-1 lg:col-span-1',
+    colSpan: 'col-span-1 md:col-span-2 lg:col-span-2',
     type: 'menu'
   },
   {
@@ -27,7 +27,7 @@ const features = [
     icon: Link2,
     color: 'text-blue-600',
     bg: 'bg-blue-50',
-    colSpan: 'col-span-1 md:col-span-3 lg:col-span-3',
+    colSpan: 'col-span-1 md:col-span-4 lg:col-span-4',
     type: 'multilink'
   }
 ];
@@ -57,7 +57,7 @@ export default function BentoFeatures() {
         </motion.div>
 
         {/* Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 auto-rows-[300px]">
+        <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-6 auto-rows-[300px]">
           {features.map((f, i) => (
             <motion.div 
               key={i}
