@@ -9,7 +9,8 @@ const features = [
     icon: MessageCircle,
     color: 'text-green-600',
     bg: 'bg-green-50',
-    colSpan: 'col-span-1 md:col-span-2 lg:col-span-2',
+    colSpan: 'col-span-1 md:col-span-3 lg:col-span-3',
+    textPad: '',
     type: 'group-chat'
   },
   {
@@ -19,6 +20,7 @@ const features = [
     color: 'text-orange-600',
     bg: 'bg-orange-50',
     colSpan: 'col-span-1 md:col-span-2 lg:col-span-2',
+    textPad: 'pr-0 sm:pr-40',
     type: 'menu'
   },
   {
@@ -27,7 +29,8 @@ const features = [
     icon: Link2,
     color: 'text-blue-600',
     bg: 'bg-blue-50',
-    colSpan: 'col-span-1 md:col-span-4 lg:col-span-4',
+    colSpan: 'col-span-1 md:col-span-5 lg:col-span-5',
+    textPad: '',
     type: 'multilink'
   }
 ];
@@ -57,7 +60,7 @@ export default function BentoFeatures() {
         </motion.div>
 
         {/* Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-6 auto-rows-[300px]">
+        <div className="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-5 gap-6 auto-rows-[300px]">
           {features.map((f, i) => (
             <motion.div 
               key={i}
@@ -73,8 +76,8 @@ export default function BentoFeatures() {
                 <div className={`w-12 h-12 rounded-2xl ${f.bg} flex items-center justify-center mb-6`}>
                   <f.icon className={`w-6 h-6 ${f.color}`} />
                 </div>
-                <h3 className="text-2xl font-bold mb-3">{f.title}</h3>
-                <p className="text-gray-500 font-medium leading-relaxed max-w-sm">
+                <h3 className={`text-2xl font-bold mb-3 ${f.textPad}`}>{f.title}</h3>
+                <p className={`text-gray-500 font-medium leading-relaxed max-w-sm ${f.textPad}`}>
                   {f.description}
                 </p>
                 
