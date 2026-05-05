@@ -77,7 +77,7 @@ const Hero = () => {
             >
               <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-brand-600 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-out" />
               <span className="relative flex items-center gap-2">
-                Get Started for Free
+                Start Free
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </span>
             </a>
