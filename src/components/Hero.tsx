@@ -50,7 +50,7 @@ const Hero = () => {
             transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             className="text-5xl md:text-7xl lg:text-[5.5rem] font-extrabold tracking-tight leading-[1.05] mb-6"
           >
-            <span className="text-gradient">One Code.</span>
+            <span className="text-gray-900">One Code.</span>
             <br />
             <span className="text-gray-900">Forever Yours.</span>
           </motion.h1>
@@ -77,7 +77,7 @@ const Hero = () => {
             >
               <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-brand-600 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-out" />
               <span className="relative flex items-center gap-2">
-                Continue with Google
+                Get Started for Free
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </span>
             </a>
