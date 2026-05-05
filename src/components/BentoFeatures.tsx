@@ -9,7 +9,8 @@ const features = [
     icon: MessageCircle,
     color: 'text-green-600',
     bg: 'bg-green-50',
-    colSpan: 'col-span-1 md:col-span-2 lg:col-span-2',
+    colSpan: 'col-span-1 md:col-span-3 lg:col-span-3',
+    textPad: 'lg:pr-64',
     type: 'group-chat'
   },
   {
@@ -18,7 +19,8 @@ const features = [
     icon: Utensils,
     color: 'text-orange-600',
     bg: 'bg-orange-50',
-    colSpan: 'col-span-1 md:col-span-1 lg:col-span-1',
+    colSpan: 'col-span-1 md:col-span-2 lg:col-span-2',
+    textPad: 'lg:pr-32',
     type: 'menu'
   },
   {
@@ -27,7 +29,8 @@ const features = [
     icon: Link2,
     color: 'text-blue-600',
     bg: 'bg-blue-50',
-    colSpan: 'col-span-1 md:col-span-3 lg:col-span-3',
+    colSpan: 'col-span-1 md:col-span-5 lg:col-span-5',
+    textPad: '',
     type: 'multilink'
   }
 ];
@@ -57,7 +60,7 @@ export default function BentoFeatures() {
         </motion.div>
 
         {/* Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 auto-rows-[300px]">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:auto-rows-[300px]">
           {features.map((f, i) => (
             <motion.div 
               key={i}
@@ -73,32 +76,35 @@ export default function BentoFeatures() {
                 <div className={`w-12 h-12 rounded-2xl ${f.bg} flex items-center justify-center mb-6`}>
                   <f.icon className={`w-6 h-6 ${f.color}`} />
                 </div>
-                <h3 className="text-2xl font-bold mb-3">{f.title}</h3>
-                <p className="text-gray-500 font-medium leading-relaxed max-w-sm">
+                <h3 className={`text-2xl font-bold mb-3 ${f.textPad}`}>{f.title}</h3>
+                <p className={`text-gray-500 font-medium leading-relaxed max-w-sm ${f.textPad}`}>
                   {f.description}
                 </p>
                 
                 {/* Clean, Light-Colored Minimalist Dynamic Visuals */}
                 {f.type === 'group-chat' && (
-                  <motion.div 
-                    animate={{ y: [0, -10, 0] }} 
+                  <motion.div
+                    animate={{ y: [0, -10, 0] }}
                     transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-                    className="absolute bottom-0 right-10 flex gap-4"
+                    className="absolute -bottom-16 right-10 hidden lg:flex gap-4"
                   >
-                    <div className="w-56 h-36 bg-white border border-gray-100 rounded-t-3xl shadow-[0_-10px_40px_rgba(0,0,0,0.03)] flex flex-col p-6">
+                    <div className="w-56 h-60 bg-white border border-gray-100 rounded-t-3xl shadow-[0_-10px_40px_rgba(0,0,0,0.03)] flex flex-col p-6">
                       <div className="w-16 h-4 bg-gray-100 rounded-full mb-5"></div>
                       <div className="w-full h-3 bg-gray-50 rounded-full mb-3"></div>
                       <div className="w-3/4 h-3 bg-gray-50 rounded-full mb-3"></div>
-                      <div className="w-1/2 h-3 bg-gray-50 rounded-full"></div>
+                      <div className="w-1/2 h-3 bg-gray-50 rounded-full mb-5"></div>
+                      <div className="w-full h-3 bg-gray-50 rounded-full mb-3"></div>
+                      <div className="w-2/3 h-3 bg-gray-50 rounded-full mb-3"></div>
+                      <div className="w-5/6 h-3 bg-gray-50 rounded-full"></div>
                     </div>
                   </motion.div>
                 )}
                 
                 {f.type === 'menu' && (
-                  <motion.div 
-                    animate={{ y: [0, -6, 0] }} 
+                  <motion.div
+                    animate={{ y: [0, -6, 0] }}
                     transition={{ repeat: Infinity, duration: 5, ease: "easeInOut", delay: 1 }}
-                    className="absolute bottom-6 right-6 flex"
+                    className="absolute bottom-6 right-6 hidden lg:flex"
                   >
                     <div className="w-32 h-32 bg-white border border-gray-100 rounded-3xl shadow-[0_10px_40px_rgba(0,0,0,0.04)] flex flex-col items-center justify-center p-4">
                       <QrCode className="w-10 h-10 text-gray-200 mb-3" />
@@ -109,7 +115,7 @@ export default function BentoFeatures() {
                 )}
 
                 {f.type === 'multilink' && (
-                  <div className="hidden md:flex absolute inset-y-0 right-16 items-center justify-center">
+                  <div className="hidden lg:flex absolute inset-y-0 right-16 items-center justify-center">
                     <div className="relative w-[400px] h-full flex flex-col justify-center gap-5">
                       <motion.div 
                         animate={{ x: [0, -10, 0] }} 
