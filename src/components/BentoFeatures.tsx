@@ -76,10 +76,12 @@ export default function BentoFeatures() {
                 <div className={`w-12 h-12 rounded-2xl ${f.bg} flex items-center justify-center mb-6`}>
                   <f.icon className={`w-6 h-6 ${f.color}`} />
                 </div>
-                <h3 className={`text-2xl font-bold mb-3 ${f.textPad}`}>{f.title}</h3>
-                <p className={`text-gray-500 font-medium leading-relaxed max-w-sm ${f.textPad}`}>
-                  {f.description}
-                </p>
+                <div className={f.textPad}>
+                  <h3 className="text-2xl font-bold mb-3">{f.title}</h3>
+                  <p className="text-gray-500 font-medium leading-relaxed max-w-sm">
+                    {f.description}
+                  </p>
+                </div>
                 
                 {/* Clean, Light-Colored Minimalist Dynamic Visuals */}
                 {f.type === 'group-chat' && (
