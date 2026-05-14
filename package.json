@@ -36,7 +36,8 @@
   "devDependencies": {
     "prettier": "^3.5.3",
     "prettier-plugin-astro": "^0.14.1",
-    "prettier-plugin-tailwindcss": "^0.6.11"
+    "prettier-plugin-tailwindcss": "^0.6.11",
+    "vite": "^8.0.12"
   },
   "overrides": {
     "@vitejs/plugin-react": "^4.3.4"
