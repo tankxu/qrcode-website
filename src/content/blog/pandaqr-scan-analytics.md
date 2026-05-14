@@ -1,6 +1,6 @@
 ---
 title: '别再只看“有人扫了码”：用数据统计把二维码变成可优化的增长入口'
-description: '从数据统计角度，讲清楚为什么要用 PandaQR 做跳转，以及如何用扫码数据持续优化线下与社媒转化。'
+description: '用 PandaQR 把每一次扫码变成可优化的数据。'
 pubDate: 2026-05-14
 draft: false
 tags: ['QR Code', 'Analytics', 'PandaQR', 'Growth']
