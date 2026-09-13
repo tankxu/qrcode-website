@@ -1,0 +1,301 @@
+---
+import Layout from '@/layouts/Layout.astro';
+const endpoints = [
+  ['GET', '/qrs', 'qrs:read', '分页列出活码，limit 1–100，cursor 使用上一页 next_cursor'],
+  ['POST', '/qrs', 'qrs:write', '创建图片、网址或多链接活码'],
+  ['GET', '/qrs/{id}', 'qrs:read', '读取活码及永久 scan_url'],
+  ['PATCH', '/qrs/{id}', 'qrs:write', '更新标题、内容、状态或到期提醒'],
+  ['DELETE', '/qrs/{id}', 'qrs:delete', '永久删除，原扫码地址将失效'],
+  ['POST', '/images', 'images:write', '上传图片，返回 r2_key 和 mime'],
+  ['PUT', '/qrs/{id}/image', 'qrs:write + images:write', '一次请求替换图片活码中的图片'],
+];
+const create = `curl https://app.pandaqr.xyz/api/v1/qrs \\
+  -H "Authorization: Bearer $PANDAQR_ACCESS_TOKEN" \\
+  -H "Content-Type: application/json" \\
+  -H "Idempotency-Key: create-community-001" \\
+  -d '{"title":"社区入口","target":{"type":"url","payload":{"url":"https://example.com"}}}'`;
+const replace = `curl -X PUT "https://app.pandaqr.xyz/api/v1/qrs/$QR_ID/image" \\
+  -H "Authorization: Bearer $PANDAQR_ACCESS_TOKEN" \\
+  -H "Content-Type: image/jpeg" \\
+  -H "Idempotency-Key: replace-community-001" \\
+  --data-binary @group-qr.jpg`;
+const upload = `curl https://app.pandaqr.xyz/api/v1/images \\
+  -H "Authorization: Bearer $PANDAQR_ACCESS_TOKEN" \\
+  -F "file=@group-qr.png"`;
+const imageCreate = `{
+  "title": "微信群入口",
+  "target": {
+    "type": "image",
+    "payload": { "r2_key": "上传接口返回的 r2_key", "mime": "image/png" }
+  },
+  "expiry": { "enabled": true, "window_seconds": 604800, "lead_times": [86400], "action": "keep" }
+}`;
+const success = `{
+  "ok": true,
+  "data": {
+    "qr": {
+      "id": "01...",
+      "slug": "abcd2345",
+      "scan_url": "https://q.pandaqr.xyz/abcd2345",
+      "status": "active",
+      "target": { "type": "image", "payload": { "r2_key": "images/.../new.jpg", "mime": "image/jpeg" } }
+    }
+  }
+}`;
+---
+
+<Layout
+  lang="zh-CN"
+  title="PandaQR API · 开发者文档"
+  description="使用 Access Token、OpenAPI、Agent skill 和 iOS 快捷指令创建和更新永久二维码。"
+>
+  <div class="docs-shell mx-auto max-w-6xl px-4 py-12 sm:py-16">
+    <header class="mb-10">
+      <p class="text-sm font-semibold tracking-widest text-blue-600">DEVELOPERS · API v1</p><h1
+        class="mt-3 text-4xl font-bold tracking-tight sm:text-5xl"
+      >
+        一个活码，持续更新。
+      </h1><p class="mt-5 max-w-2xl text-lg text-gray-500">
+        把 PandaQR 接入你的应用、Agent 和 iPhone。更新内容，保留已印刷、已分享的扫码地址。
+      </p><div class="mt-6 flex flex-wrap gap-3">
+        <a
+          class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white"
+          href="https://app.pandaqr.xyz/developer">创建 Access Token ↗</a
+        ><a class="rounded-lg border px-4 py-2 text-sm" href="/openapi.json">下载 OpenAPI 3.1</a><a
+          class="rounded-lg border px-4 py-2 text-sm"
+          href="#shortcut">iOS 快捷指令 ↓</a>
+      </div>
+    </header>
+    <div class="grid gap-10 lg:grid-cols-[190px_minmax(0,1fr)]">
+      <aside>
+        <nav class="flex flex-wrap gap-3 text-sm lg:sticky lg:top-6 lg:flex-col">
+          {
+            [
+              ['start', '快速开始'],
+              ['tokens', '认证与权限'],
+              ['endpoints', '接口'],
+              ['images', '创建图片活码'],
+              ['replace', '一键替换图片'],
+              ['reliability', '错误与重试'],
+              ['agent', 'Agent skill'],
+              ['shortcut', 'iOS 快捷指令'],
+            ].map(([id, label]) => (
+              <a class="text-gray-500 hover:text-blue-600" href={'#' + id}>
+                {label}
+              </a>
+            ))
+          }
+        </nav>
+      </aside>
+      <article class="min-w-0 space-y-12">
+        <section id="start">
+          <h2>快速开始</h2><p>
+            在用户后台「开发者」创建 Token。所有接口使用 HTTPS，基础地址为 <code
+              >https://app.pandaqr.xyz/api/v1</code
+            >。下列命令从环境变量读取 Token；不要将它写进公开代码或 URL。
+          </p><pre><code>{create}</code></pre><p>
+            保存返回的 <code>data.qr.id</code> 和 <code>data.qr.scan_url</code>。接口路径使用
+            ID，不是短链接里的 slug。
+          </p>
+        </section>
+        <section id="tokens">
+          <h2>认证与权限</h2><p>
+            请求头：<code>Authorization: Bearer pqr_live_…</code>。Token
+            完整值只显示一次，服务端仅存 SHA-256 哈希。有效期可选 7、30、90、365 天，最多同时存在 20
+            个有效 Token；可随时撤销，最近使用时间和 API 请求记录可在后台查看。
+          </p><p>
+            权限：<code>qrs:read</code> 读取；<code>qrs:write</code> 创建和更新；<code
+              >images:write</code
+            > 上传；<code>qrs:delete</code> 删除。每个 Token 只操作所属账户。可以进一步限定到一个活码；限定
+            Token 不能创建活码或调用独立上传接口，应使用该活码的 <code>{'PUT /qrs/{id}/image'}</code
+            >。
+          </p><p>
+            轮换方式：创建新 Token → 更新集成配置并验证 → 撤销旧
+            Token。到期不会自动延长。审计记录保留 90 天，不保存 Token 明文和请求正文。
+          </p>
+        </section>
+        <section id="endpoints">
+          <h2>接口参考</h2><div class="overflow-x-auto">
+            <table>
+              <thead><tr><th>方法 / 路径</th><th>权限</th><th>用途</th></tr></thead><tbody
+                >{
+                  endpoints.map(([method, path, scope, desc]) => (
+                    <tr>
+                      <>
+                        <td>
+                          <code>
+                            {method} {path}
+                          </code>
+                        </td>
+                        <td>
+                          <code>{scope}</code>
+                        </td>
+                        <td>{desc}</td>
+                      </>
+                    </tr>
+                  ))
+                }</tbody>
+            </table>
+          </div><p>
+            列表按 ID 降序排列，默认每页 20 条；<code>next_cursor: null</code> 表示结束。成功返回 <code
+              >{'{ok:true,data:…}'}</code
+            >，新建返回 201，其余成功返回 200。时间戳均为 Unix 毫秒。完整字段、限制及请求模型见 <a
+              href="/openapi.json">OpenAPI 规范</a
+            >。
+          </p><p>
+            <code>PATCH</code> 支持 title、description、note、status、target、expiry。target 整体替换；status
+            为 active 或 paused。多链接 target.type 为 multilink，payload.items 为 1–10 个包含 label 和
+            url 的对象。
+          </p>
+        </section>
+        <section id="images">
+          <h2>创建图片活码</h2><p>
+            先上传，再使用响应中的 <code>data.image.r2_key</code> 和 <code>mime</code> 创建活码。支持
+            PNG、JPEG、WebP，单张不超过 2 MiB；HEIC 请先转换。只允许绑定本账户已上传的图片。
+          </p><pre><code>{upload}</code></pre><p>
+            将下面 JSON 发送到 <code>POST /qrs</code>：
+          </p><pre><code>{imageCreate}</code></pre>
+        </section>
+        <section id="replace">
+          <h2>一键替换群二维码图片</h2><p>
+            对已有图片活码直接上传新图。接口同时保存图片和切换内容，无需先上传再
+            PATCH。支持原始图片字节，也支持 multipart/form-data 的 file 字段。
+          </p><pre><code>{replace}</code></pre><p>
+            成功响应示例（省略部分字段）：
+          </p><pre><code>{success}</code></pre><p>
+            ID、slug 和 scan_url
+            不变；下一次重新打开扫码页会读取最新内容，已打开的页面需要刷新。启用的到期提醒重新计时，但暂停的活码不会自动恢复；如需恢复，明确
+            PATCH status 为 active。此接口用于图片活码，其他类型返回 409。
+          </p>
+        </section>
+        <section id="reliability">
+          <h2>错误、限流与重试</h2><p>
+            每个 Token 每分钟最多 60 个请求。响应包含 <code>X-Request-Id</code> 和 <code
+              >X-RateLimit-Limit / Remaining / Reset</code
+            >。收到 429 时等待 <code>Retry-After</code> 秒再重试。
+          </p><p>
+            写请求可发送 <code>Idempotency-Key</code>（1–128
+            个字母、数字、点、下划线、冒号或短横线）。同 Token、同键、完全相同的请求在 24
+            小时内重放原响应，响应头含 <code>Idempotency-Replayed: true</code
+            >。重复请求也消耗限流额度。不要给不同操作复用同一个键。
+          </p><p>
+            重试须保持方法、路径、Content-Type 和正文原始字节一致；multipart 的 boundary
+            也需相同，自动化建议发送原始图片字节。未带幂等键的 POST 不应盲目重试。409
+            request_in_progress 表示前次处理未完成或结果不确定，先读取活码状态；500
+            或网络断开后也先检查结果。
+          </p><pre><code>{'{"ok":false,"error":{"code":"insufficient_scope","message":"Requires qrs:write"}}'}</code></pre><ul
+          >
+            <li>400：invalid_input / invalid_image，请修正字段或图片归属。</li><li>
+              401：invalid_token，Token 无效、已到期或撤销。
+            </li><li>403：insufficient_scope，缺少权限或受到单活码限制。</li><li>
+              404：not_found，活码不存在或不属于此账户。
+            </li><li>
+              409：target_type_mismatch / idempotency_conflict / request_in_progress。
+            </li><li>413 / 415：图片过大 / 格式不支持。</li><li>
+              429：rate_limited。500：internal_error，保留 X-Request-Id 排查。
+            </li>
+          </ul>
+        </section>
+        <section id="agent">
+          <h2>给 Agent 的 skill</h2><p>
+            下载 <a href="/skills/pandaqr.zip">pandaqr skill 压缩包</a>，将 pandaqr 文件夹放入 Agent
+            的 skills 目录。也可先阅读 <a href="/skills/pandaqr/SKILL.md">SKILL.md</a>。内置 Python
+            客户端无需第三方依赖，支持分页、上传、创建和替换图片，不会自动重试写请求。
+          </p><pre><code>{`export PANDAQR_ACCESS_TOKEN='你的 Token'
+python3 pandaqr/scripts/pandaqr.py list
+python3 pandaqr/scripts/pandaqr.py replace-image "$QR_ID" group-qr.jpg`}</code></pre><p
+          >
+            Agent 应先识别目标活码，再替换图片并确认 scan_url 不变。删除活码需要明确指令。
+          </p>
+        </section>
+        <section id="shortcut">
+          <h2>iOS 快捷指令</h2><p>
+            <a
+              class="inline-block rounded-lg bg-blue-600 px-4 py-2 text-white"
+              href="/shortcuts/PandaQR-Update-Image.shortcut">下载「PandaQR 更新群二维码」</a>
+          </p><ol>
+            <li>先在后台创建一个图片活码。</li><li>
+              在「开发者」创建仅限此活码的 Token，勾选 qrs:write 和 images:write。
+            </li><li>
+              在 iPhone 下载并用「快捷指令」打开文件，按导入提示填写 Token 和活码
+              ID；也可在编辑器最前面的两个文本动作里修改。
+            </li><li>
+              运行快捷指令，选取最新的群二维码图片。它会转换为 JPEG，向 API 上传并显示响应；<code
+                >ok: true</code
+              > 才表示成功。
+            </li><li>可将快捷指令添加到主屏幕，之后点一下并选择图片即可更新。重新扫码确认新图。</li>
+          </ol><p>
+            iOS 首次运行可能询问照片和网络访问权限。若转换后仍超过 2
+            MiB，请先缩小图片。取消选图不会更新；Token 到期或撤销后需要替换配置。请勿分享填好个人
+            Token 的副本。
+          </p>
+        </section>
+      </article>
+    </div>
+  </div>
+</Layout>
+<style>
+  article h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    scroll-margin-top: 2rem;
+  }
+  article p,
+  article li {
+    line-height: 1.85;
+    color: #475569;
+    margin: 0.8rem 0;
+  }
+  article a {
+    color: #2563eb;
+    text-decoration: underline;
+  }
+  article a.bg-blue-600 {
+    color: white;
+    text-decoration: none;
+  }
+  article pre {
+    overflow-x: auto;
+    border-radius: 0.75rem;
+    background: #0f172a;
+    color: #e2e8f0;
+    padding: 1.25rem;
+    font-size: 0.8rem;
+    line-height: 1.8;
+    margin: 1rem 0;
+  }
+  article p code,
+  article li code {
+    overflow-wrap: anywhere;
+    font-size: 0.85em;
+    background: #f1f5f9;
+    padding: 0.15em 0.3em;
+    border-radius: 0.2rem;
+  }
+  article ul {
+    list-style: disc;
+    padding-left: 1.5rem;
+  }
+  article ol {
+    list-style: decimal;
+    padding-left: 1.5rem;
+  }
+  table {
+    width: 100%;
+    font-size: 0.8rem;
+    text-align: left;
+  }
+  th,
+  td {
+    padding: 0.85rem;
+    border-bottom: 1px solid #e2e8f0;
+    vertical-align: top;
+  }
+  td:first-child {
+    min-width: 180px;
+  }
+  section {
+    scroll-margin-top: 1.5rem;
+  }
+</style>
